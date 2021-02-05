@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class ObjectUsage : MonoBehaviour {
+
+    public AudioSource PickaxeSwingAudio;
+    public AudioSource TorchSwingAudio;
+    public AudioClip[] Mining;
+    public AudioSource PickaxeHit;
 
     [Header ("Fuel Objects")]
     public Slider fuel;
@@ -51,15 +57,6 @@ public class ObjectUsage : MonoBehaviour {
 
 
 
-
-
-
-
-
-
-
-
-
 	void Update ()
     {
         RaycastHit hit;
@@ -69,6 +66,7 @@ public class ObjectUsage : MonoBehaviour {
         {
             if (inventory.selected == 0)
             {
+                TorchSwingAudio.Play();
                 punchAnim.SetTrigger("PunchTorch");
                 if (Physics.Raycast(ray, out hit, 4f))
                 {
@@ -86,11 +84,12 @@ public class ObjectUsage : MonoBehaviour {
             {
 
                 punchAnim.SetTrigger("PunchPick");
+                PickaxeSwingAudio.Play();
 
 
                 if (Physics.Raycast(ray, out hit, 4f))
                 {
-
+                    PickaxeHit.PlayOneShot(Mining[Random.Range(0,Mining.Length)]);
                     GameObject PickSpark = Instantiate(pickaxeSparks, hit.point, Quaternion.LookRotation(hit.normal));
                     Destroy(PickSpark, 3f);
                     if(hit.transform.tag == "Mineable")

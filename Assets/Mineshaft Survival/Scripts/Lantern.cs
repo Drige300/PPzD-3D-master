@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Lantern : MonoBehaviour {
 
+    public AudioSource LaternAudio;
+
     [Header ("Lamp Stats")]
     public float Fuel = 1000; //Fuel lamp currently has
     public bool toggled = true; //if lamp is on or off
@@ -133,12 +135,14 @@ public class Lantern : MonoBehaviour {
         toggled = true;
         Glass.material = LampOn; //if lamp gets turned on change its glass material to LampOn
         Light.SetActive(true);
+        LaternAudio.Play();
     }
     public void TurnOff()
     {
         toggled = false;
         Glass.material = LampOff;//if lamp gets turned off change its glass material to LampOff
         Light.SetActive(false);
+        LaternAudio.Stop();
     }
     public void Toggle()
     {

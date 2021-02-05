@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class AIController : MonoBehaviour {
@@ -27,6 +28,14 @@ public class AIController : MonoBehaviour {
     Rigidbody rb; //Automaticly finds the rigidbody
     float distance; //distance float for distance calculations
 
+    public AudioSource Rat;
+    public AudioClip RatDeath;
+    public AudioClip[] RatNoise;
+
+   
+     
+    float timePassed = 0f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -35,7 +44,6 @@ public class AIController : MonoBehaviour {
             StartCoroutine(Path());
         }
         StartCoroutine(Attack());
-
     }
 
 	void Update ()
@@ -44,6 +52,15 @@ public class AIController : MonoBehaviour {
         {
             AIObj.transform.eulerAngles = new Vector3(-90, -90, 0);
             Die();
+        }
+        else
+        {
+            timePassed += Time.deltaTime;
+            if (timePassed > 3f)
+            {
+                timePassed = 0f;
+                Rat.PlayOneShot(RatNoise[Random.Range(0, RatNoise.Length)]);
+            }
         }
 
         distance = Vector3.Distance(gameObject.transform.position, Player.transform.position); //calulates the distance between player and the AI
@@ -107,5 +124,7 @@ public class AIController : MonoBehaviour {
         thirdChar.enabled = false; //disable all scripts after death
         Target.enabled = false; // ^
         this.enabled = false; // ^
+        Rat.clip = RatDeath;
+        Rat.PlayOneShot(Rat.clip);
     }
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Spotlight : MonoBehaviour {
 
+
+    public AudioSource LampAudio;
+
     [Header("Spotlight stats")]
     public float MaxDistance = 20;
     public bool Toggled = true;
@@ -49,6 +52,7 @@ public class Spotlight : MonoBehaviour {
         {
             lightCube.material = LampOff;
             Lights.SetActive(false);
+            LampAudio.Stop();
         }
     }
 
@@ -57,10 +61,12 @@ public class Spotlight : MonoBehaviour {
         if(Toggled)
         {
             PlayerPrefs.SetInt(SpotID, 1);
+            LampAudio.Play();
         }
         else
         {
             PlayerPrefs.SetInt(SpotID, 0);
+            LampAudio.Stop();
         }
     }
     public void Load()

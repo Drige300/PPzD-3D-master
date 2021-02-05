@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Generator : MonoBehaviour {
+
+    public AudioSource GeneratorAudio;
 
     [Header("Generator Stats")]
     public float CurrentFuel;
     public float MaxFuel;
     public bool Toggled = false;
+    
 
     [Header("Visuals")]
     public GameObject VisualObjects;
@@ -29,6 +33,7 @@ public class Generator : MonoBehaviour {
         {
             CurrentFuel = 2;
             Toggled = false;
+            GeneratorAudio.Stop();
         }
         
         if(Toggled)
@@ -68,10 +73,12 @@ public class Generator : MonoBehaviour {
         if(Toggled == true)
         {
             PlayerPrefs.SetInt(GeneratorTogg, 1);
+            GeneratorAudio.Play();
         }
         else
         {
             PlayerPrefs.SetInt(GeneratorTogg, 2);
+            GeneratorAudio.Stop();
         }
         PlayerPrefs.Save();
         Debug.Log("Generator SAVED!");
